@@ -1,4 +1,4 @@
-#include <UnityCG.cginc>
+#include <HLSLSupport.cginc>
 
 void CalculateBlendFactors_float(float4 UV2, float4 UV3, float basefactor, float baseExponent, out float4 BlendFactorsUV2, out float4 BlendFactorsUV3, out float baseLayerFactor)
 { 
@@ -77,16 +77,16 @@ void UnpackNormal_float(float4 packedNormal, float bumpPower, out float3 outNorm
     outNormal = normalize(normal);
 }
 
-// fixed3 UnpackNormalmapRGorAG(fixed4 packednormal)
-// {
-//     // This do the trick
-//     packednormal.x *= packednormal.w;
-//
-//     fixed3 normal;
-//     normal.xy = packednormal.xy * 2 - 1;
-//     normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
-//     return normal;
-// }
+fixed3 UnpackNormalmapRGorAG(fixed4 packednormal)
+{
+    // This do the trick
+    packednormal.x *= packednormal.w;
+
+    fixed3 normal;
+    normal.xy = packednormal.xy * 2 - 1;
+    normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
+    return normal;
+}
 
 void TextureArrayBlendLayers_Normal_float(UnityTexture2D BaseNormal, UnityTexture2DArray Normal, float2 UV, UnitySamplerState Sampler, float4 blendFactorsUV2, float4 blendFactorsUV3, float baseLayerFactor,
 out float3 outNormal)
